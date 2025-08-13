@@ -114,5 +114,4 @@ external.py
 Contribuições são bem-vindas!  
 Leia o arquivo `CONTRIBUTING.md` antes de enviar PRs.
 
-## 📜 Licença
-Este projeto está sob a licença **[Nome da Licença]**.
+
