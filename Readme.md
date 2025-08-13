@@ -2,7 +2,7 @@
 # 💳 Gateway de Pagamentos API
 
 <p align="center">
-  <img src="assets/banner_gateway.png" alt="Gateway de Pagamentos API" width="800"/>
+  <img src="assets/banner_gateway_.png" alt="Gateway de Pagamentos API" width="800"/>
 </p>
 
 > **Uma API de gateway de pagamentos** simples e escalável, construída com **FastAPI**, que permite:
@@ -71,8 +71,16 @@ docker-compose ps
 
 ```
 .
+├── .github/
+│   ├── workflows/    # CI/CD
+│   │    └── cy.yml
 ├── app/
+│   ├── api/          # API externa
+│   │   └── external.py
+│   ├── auth/         # Autenticação
 │   ├── core/         # Configurações globais
+│   │   └── database.py
+│   ├── crud/         # Create Read Update Delete
 │   │   └── database.py
 │   ├── models/       # Modelos SQLAlchemy
 │   │   └── models.py
@@ -80,13 +88,19 @@ docker-compose ps
 │   │   ├── users.py
 │   │   ├── charges.py
 │   │   └── payments.py
-│   ├── schemas/      # Validação Pydantic
+│   │  schemas/        # Validação Pydantic  
 │   │   └── schemas.py
+│   ├── tests/          # API externa
+│   │  └── test_users.py
+│   ├── assets/          # API externa
+│   │    └── img.png
 │   └── main.py       # Entrada principal
 ├── .env
 ├── docker-compose.yml
 └── Dockerfile
+
 ```
+external.py
 
 ## 📖 Uso da API
 
