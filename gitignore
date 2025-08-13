@@ -1,0 +1,21 @@
+# ======================================================
+# Arquivos e pastas a serem ignorados pelo Git
+# ======================================================
+
+# Ambiente Virtual
+venv/
+.venv/
+
+# Arquivos Python
+__pycache__/
+*.pyc
+
+# Arquivos de variáveis de ambiente com dados sensíveis
+.env
+
+# Arquivos de banco de dados locais
+test.db
+
+# Pastas de configuração de IDEs como VS Code ou PyCharm
+.vscode/
+.idea/
