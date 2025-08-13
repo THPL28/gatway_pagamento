@@ -109,9 +109,3 @@ external.py
 - Redoc: [http://localhost:8000/redoc](http://localhost:8000/redoc)
 
 ---
-
-## 🤝 Contribuição
-Contribuições são bem-vindas!  
-Leia o arquivo `CONTRIBUTING.md` antes de enviar PRs.
-
-
