@@ -2,7 +2,7 @@ name: CI do Gateway de Pagamentos
 
 on:
   push:
-    branches: [ main ]
+    branches: [ mas ]
   pull_request:
     branches: [ main ]
 
