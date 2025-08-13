@@ -2,9 +2,9 @@ name: CI do Gateway de Pagamentos
 
 on:
   push:
-    branches: [ mas ]
+    branches: [ master ]
   pull_request:
-    branches: [ main ]
+    branches: [ master ]
 
 jobs:
   build:
@@ -17,7 +17,7 @@ jobs:
       uses: actions/checkout@v4
 
    
-    - name: Configurar Python
+    - name: Config Python
       uses: actions/setup-python@v5
       with:
         python-version: '3.9'
