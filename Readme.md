@@ -146,7 +146,7 @@ pytest --cov=app --cov-report=term-missing
 pytest tests/test_users.py
 ```
 
-- **E-mail:** 
+- **E-mail:anderson.cruz@nimblebaas.com.br** 
 
 
 ---
