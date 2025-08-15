@@ -23,7 +23,11 @@ def payment_by_balance(
     """
     Realiza um pagamento de cobrança usando o saldo do usuário.
     """
-    if current_user.id == crud.get_charge_by_id(db, charge_id=payment_data.charge_id).recipient_id:
+    charge = crud.get_charge_by_id(db, charge_id=payment_data.charge_id)
+    if not charge:
+        raise HTTPException(status_code=404, detail="Cobrança não encontrada")
+
+    if current_user.id == charge.recipient_id:
         raise HTTPException(status_code=400, detail="Não é possível pagar uma cobrança para si mesmo.")
         
     return crud.make_payment_by_balance(db=db, charge_id=payment_data.charge_id, user_id=current_user.id)
@@ -37,7 +41,6 @@ async def payment_by_card(
     """
     Realiza um pagamento de cobrança usando cartão de crédito, consultando o autorizador externo.
     """
-    # A validação dos dados do cartão pode ser implementada aqui
     is_authorized = await external.authorize_payment()
     if not is_authorized:
         raise HTTPException(status_code=400, detail="Pagamento não autorizado pelo serviço externo")
