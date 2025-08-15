@@ -1,9 +1,10 @@
 from pydantic import BaseModel, EmailStr, field_validator, model_validator
 from typing import Optional
 from datetime import datetime
+from decimal import Decimal
 import re
 
-# ===== Funções auxiliares para CPF =====
+# Funções auxiliares para CPF
 def _only_digits(s: str) -> str:
     return re.sub(r"\D", "", s or "")
 
@@ -16,11 +17,8 @@ def _validate_cpf(digits: str) -> bool:
         return 0 if r == 10 else r
     return dv(digits[:9]) == int(digits[9]) and dv(digits[:10]) == int(digits[10])
 
-# ====================
-# Esquemas de Usuário
-# ====================
+# Usuário
 class UserCreate(BaseModel):
-    # Cadastro de usuário (POST /users/)
     name: str
     cpf: str
     email: EmailStr
@@ -35,21 +33,18 @@ class UserCreate(BaseModel):
         return d
 
 class User(BaseModel):
-    # Retorno de dados de usuário (sem senha)
     id: int
     name: str
     cpf: str
     email: EmailStr
-    balance: float
+    balance: Decimal
 
     class Config:
         from_attributes = True
 
-# ====================
-# Esquemas de Cobrança
-# ====================
+# Cobrança
 class ChargeBase(BaseModel):
-    value: float
+    value: Decimal
     description: Optional[str] = None
     recipient_cpf: str
 
@@ -74,12 +69,10 @@ class Charge(ChargeBase):
     class Config:
         from_attributes = True
 
-# ====================
-# Esquemas de Transação
-# ====================
+# Transação
 class TransactionBase(BaseModel):
     type: str
-    amount: float
+    amount: Decimal
     status: str
     user_id: int
     charge_id: Optional[int] = None
@@ -94,7 +87,7 @@ class TransactionPaymentByCard(BaseModel):
     cvv: str
 
 class TransactionDeposit(BaseModel):
-    amount: float
+    amount: Decimal
 
 class Transaction(TransactionBase):
     id: int
@@ -103,9 +96,7 @@ class Transaction(TransactionBase):
     class Config:
         from_attributes = True
 
-# ====================
-# Esquemas de Autenticação
-# ====================
+# Autenticação
 class Token(BaseModel):
     access_token: str
     token_type: str
@@ -130,3 +121,6 @@ class UserLogin(BaseModel):
         if not (self.cpf or self.email):
             raise ValueError("Informe CPF ou e-mail para login")
         return self
+    
+class TokenData(BaseModel):
+    username: Optional[str] = None
