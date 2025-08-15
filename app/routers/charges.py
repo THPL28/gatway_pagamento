@@ -11,6 +11,7 @@ router = APIRouter(
     prefix="/charges",
     tags=["charges"]
 )
+
 @router.post("/", response_model=schemas.Charge)
 def create_charge(
     charge: schemas.ChargeCreate,
@@ -24,7 +25,6 @@ def create_charge(
     if charge.value <= 0:
         raise HTTPException(status_code=400, detail="O valor da cobrança deve ser positivo.")
 
-    #  Buscar destinatário pelo CPF
     recipient = db.query(models.User).filter(models.User.cpf == charge.recipient_cpf).first()
     if not recipient:
         raise HTTPException(
@@ -32,16 +32,34 @@ def create_charge(
             detail="Destinatário não encontrado."
         )
 
-    #  Evitar cobrança para si mesmo
     if recipient.id == current_user.id:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="Não é possível criar cobrança para si mesmo."
         )
 
-    #  Criar cobrança
     return crud.create_charge(
         db=db,
         charge=charge,
         originator_id=current_user.id
     )
+
+@router.post("/{charge_id}/cancel")
+def cancel_charge(
+    charge_id: int,
+    db: Session = Depends(database.get_db),
+    current_user: Annotated[models.User, Depends(auth.get_current_user)] = None
+):
+    """
+    Cancela uma cobrança pendente ou estorna pagamento realizado via saldo.
+    """
+    charge = crud.get_charge_by_id(db, charge_id)
+    if not charge:
+        raise HTTPException(status_code=404, detail="Cobrança não encontrada.")
+
+    # Apenas o originador pode cancelar a cobrança
+    if charge.originator_id != current_user.id:
+        raise HTTPException(status_code=403, detail="Não autorizado a cancelar esta cobrança.")
+
+    result = crud.cancel_charge(db, charge_id)
+    return result
