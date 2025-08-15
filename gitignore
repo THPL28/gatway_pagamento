@@ -19,3 +19,15 @@ test.db
 # Pastas de configuração de IDEs como VS Code ou PyCharm
 .vscode/
 .idea/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# VSCode
+.vscode/
+
+# Arquivos do sistema
+.DS_Store
